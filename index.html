@@ -1,0 +1,30 @@
+<audio id="multiaudio1" src="flute_c_long_01.wav" preload="auto"></audio>
+<audio id="multiaudio2" src="piano_chord.wav" preload="auto"></audio>
+<audio id="multiaudio3" src="synth_vox.wav" preload="auto"></audio>
+<audio id="multiaudio4" src="shimmer.wav" preload="auto"></audio>
+<audio id="multiaudio5" src="sweep.wav" preload="auto"></audio>
+
+<a href="javascript:play_multi_sound('multiaudio1');">Flute</a><br />
+
+
+<script type="text/javascript">
+	var channel_max = 10;										// number of channels
+	audiochannels = new Array();
+	for (a=0;a<channel_max;a++) {									// prepare the channels
+		audiochannels[a] = new Array();
+		audiochannels[a]['channel'] = new Audio();						// create a new audio object
+		audiochannels[a]['finished'] = -1;							// expected end time for this channel
+	}
+	function play_multi_sound(s) {
+		for (a=0;a<audiochannels.length;a++) {
+			thistime = new Date();
+			if (audiochannels[a]['finished'] < thistime.getTime()) {			// is this channel finished?
+				audiochannels[a]['finished'] = thistime.getTime() + document.getElementById(s).duration*1000;
+				audiochannels[a]['channel'].src = document.getElementById(s).src;
+				audiochannels[a]['channel'].load();
+				audiochannels[a]['channel'].play();
+				break;
+			}
+		}
+	}
+</script>
